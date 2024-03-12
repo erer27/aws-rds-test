@@ -47,3 +47,21 @@ jobs:
 
     - name: docker Hub push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-test
+
+
+  deploy :
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+      - name: docker pull
+        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-test
+      
+      - name: docker stop container
+        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+
+      - name: docker run new container
+        run: sudo docker run --name github-actions-test --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-test
+
+      - name: delete old docker image
+        run: sudo docker system prune -f
