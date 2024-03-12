@@ -28,10 +28,14 @@ jobs:
         ./gradlew clean build
       
     - name: Build Docker Image
-      run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+
+
+    - name: docker login
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: docker Hub push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
