@@ -23,7 +23,9 @@ jobs:
       uses: gradle/gradle-build-action@v3
       
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: |
+        chmod +x ./gradlew
+        ./gradlew clean build
       
     - name: Build Docker Image
       run: |
