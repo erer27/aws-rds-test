@@ -12,11 +12,12 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-    - run: pwd
-    - run: mkdir ./src/main/resources
-    - run: touch ./src/main/resources/application.properties
-    - run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
-    - run: cat ./src/main/resources/application.properties
+
+    - name: Make application.properties
+    - run: |
+        mkdir ./src/main/resources
+        touch ./src/main/resources/application.properties
+        echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       
     - name: Set up JDK
